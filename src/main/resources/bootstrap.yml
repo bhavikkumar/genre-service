@@ -1,0 +1,54 @@
+# Global Settings
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+spring:
+  application:
+    name: genre
+  main:
+    banner-mode: "off"
+  profiles:
+    active: development
+  cloud:
+    consul:
+      discovery:   
+        tags: version=1.0, 1.0, 1.0.1
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+      config:
+        enabled: true
+        prefix: configuration
+        defaultContext: services
+        profileSeparator: '::'
+    vault:
+      defaultKey: services
+      fail-fast: true        
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+                 
+management:
+  add-application-context-header: false
+---
+spring:
+  profiles: development
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        hostname: docker.for.win.localhost # For mac this would be docker.for.mac.localhost
+    vault:
+      host: localhost
+      port: 8200
+      scheme: http
+      token: vault-token        
+---
+spring:
+  profiles: production
+  cloud:
+    consul:
+      host: 172.17.0.1
+      port: 8500
+    vault:
+      host: vault.depost.pro
+      port: 8200
+      scheme: http
+      token: vault-token
