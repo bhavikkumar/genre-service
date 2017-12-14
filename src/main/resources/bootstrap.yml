@@ -10,7 +10,7 @@ spring:
   cloud:
     consul:
       discovery:   
-        tags: version=1.0, 1.0, 1.0.1
+        tags: version=1.0, 1.0, 1.0.2
         instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
       config:
         enabled: true
