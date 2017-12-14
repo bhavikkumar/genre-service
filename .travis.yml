@@ -4,12 +4,12 @@ env:
   global:
     - REPO=bhavikk/genre-service
     - secure: JdOERUFGO8Y9e//rbcL4W2hpUg0IO2Na/seKqmr2I2XlItQkE7usPReEcjMEktKZB/Z1GkJQWSylgka1FiTAmWpiK2Lo1NNWPHuiHIfzVULa/2fTGRGhQMiTSbGtvVYuhiAvmRFEE4y41etOz7qL0fkSbuMG0hIdzYxPpSSNlFoe4SzvGcXLal1gHhomxU6wwshaugWMHxcIGDj5iIppaRzQzN0+dvd1WxN0o917MHOrJ2knWUtUy8EkvZANsJSt61aVVFRWtN4xxXvD5slY3JdNf11TIthgOQ0cluTk6zS8UG3jNHQ7WoFSHBtJf+kmIVsvaM1ep5B5LvljJkUYJNR4X13YCpobgIrTsq8pUykZxCjPWXe8fc2WbanIcZTy8x8ivJ+FArzRojTFM3TwrTg6lFc8amHUd62hq6Rb67KWOfcUcXd9A+vb6KdiHdV9KdGTJrEwQ/o6n9k+7Kl2ZfnoyGzzSTvxToJrpyslO7wjm0a8uiCRMTgaWLs+PzmejiBCnbn9K2fIlL1QprZHGDhu3wxR0fc++5mCKwYs6nSv7olpGTC/ktd678sumpXqGe0sJ9G2ftjvJwUYJEe/2SAlyogZW/Ij0bybw2Hkzb1vPqRN+v+yZgOhso9CwHdyPXoIqEk42iLnvy3jcX5XwyhmTcoehIazmaJcQufFo9k=
-    - secure: t8HQuWPcE32WQzZ4Kqibcg9KHSuyk4xBq2XLuRZ44JJU5eqnjomOKQJ7NV/HwCX+orqDwgoXJegSwEnnz9c2JgMBcyzP0zkkpy2rItwkG5j3pGYAUsnyXhsCMXUjgn7t8tIKvzGjn1l8PLFQXrU8v9qCEHpGNHAoBYZfWGDuY43Z0w/iQCu9wdZPb6pO+kvArKKoA4RTdTY6HW8Me3M+uueo8nHEM59QL3L/6zXOOpSmgYLgLNaJEoEZDs9rGpyNN7M7VLmVsvjgS5sWiH/nB6VRnHxqWDBGspw5DzuXpyd5YY6vu2vNjyn0PsAmZxHGe3miFqOieaTiOS15ywwReSV7lzYW+cht55/wvp9GYN4WA6ptL+nOajwtRh6YzCVLOKV1Xy9RL61d1OPNdXPcVjFeTUSOEef6RfpZu2JdS7OiowJQ6r6ln0A1ttFvScp6dTCRLLvVaPsqYG9MPe0d44Xm2kwgnsuvu65JCIS/FHSmDFaVqkvwXsRwR+G61d1wGXfQuobknk/+NKulDAG75EYaW5KmTfRQhcEXfat/kAeEcw/e3WGZxPWVAQAVmZb8b2YrcnL448Sj2Dkdl0V6K83J6p0HB0A52rRZ2I2Wfk9jFf7sCxLPgGvbpl3bVAIbblaUjijbmYCg3a1hapSEgo/lqJ/X2Z2WfYb6mDDdrDY= 
-  
+    - secure: t8HQuWPcE32WQzZ4Kqibcg9KHSuyk4xBq2XLuRZ44JJU5eqnjomOKQJ7NV/HwCX+orqDwgoXJegSwEnnz9c2JgMBcyzP0zkkpy2rItwkG5j3pGYAUsnyXhsCMXUjgn7t8tIKvzGjn1l8PLFQXrU8v9qCEHpGNHAoBYZfWGDuY43Z0w/iQCu9wdZPb6pO+kvArKKoA4RTdTY6HW8Me3M+uueo8nHEM59QL3L/6zXOOpSmgYLgLNaJEoEZDs9rGpyNN7M7VLmVsvjgS5sWiH/nB6VRnHxqWDBGspw5DzuXpyd5YY6vu2vNjyn0PsAmZxHGe3miFqOieaTiOS15ywwReSV7lzYW+cht55/wvp9GYN4WA6ptL+nOajwtRh6YzCVLOKV1Xy9RL61d1OPNdXPcVjFeTUSOEef6RfpZu2JdS7OiowJQ6r6ln0A1ttFvScp6dTCRLLvVaPsqYG9MPe0d44Xm2kwgnsuvu65JCIS/FHSmDFaVqkvwXsRwR+G61d1wGXfQuobknk/+NKulDAG75EYaW5KmTfRQhcEXfat/kAeEcw/e3WGZxPWVAQAVmZb8b2YrcnL448Sj2Dkdl0V6K83J6p0HB0A52rRZ2I2Wfk9jFf7sCxLPgGvbpl3bVAIbblaUjijbmYCg3a1hapSEgo/lqJ/X2Z2WfYb6mDDdrDY=
+
 language: java
 
 jdk:
-- oraclejdk8
+- openjdk8
 
 services:
 - docker
@@ -17,7 +17,7 @@ services:
 branches:
   only:
   - master
-  
+
 before_script:
 - export TZ=Pacific/Auckland
 - export TAG=`if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master"]];
@@ -28,6 +28,7 @@ after_success:
 - gradle jacocoTestReport
 - gradle dockerTag
 - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
-  gradle dockerPush fi
+  gradle dockerPush; 
+  fi
 - docker tag $REPO:latest $REPO:$TAG
 - docker push $REPO:$TAG
