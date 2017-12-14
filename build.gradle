@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.9.RELEASE")
         classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0")
+        classpath("org.owasp:dependency-check-gradle:3.0.2")
     }
 }
 
@@ -19,10 +20,12 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'jacoco'
 apply plugin: 'com.palantir.docker'
+apply plugin: 'findbugs'
+apply plugin: 'org.owasp.dependencycheck'
 
 jar {
     baseName = 'genre-service'
-    version =  '1.0.1'
+    version =  '1.0.2'
 }
 
 repositories {
@@ -54,14 +57,21 @@ jacocoTestCoverageVerification {
     }
 }
 
-// Runs coverage verification and report every test run
-test { 
-    finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+tasks.withType(FindBugs) {
+    reports {
+        xml.enabled false
+        html.enabled true
+    }
 }
+
+// Runs coverage verification and report every test run
+// test { 
+//    finalizedBy jacocoTestReport, jacocoTestCoverageVerification
+// }
 
 docker {
     name "${project.group}/${jar.baseName}:${jar.version}"
-    tags 'latest'
+    tags jar.version,'latest'
     files jar.archivePath
     buildArgs(['JAR_FILE': "${jar.archiveName}"])
 }
