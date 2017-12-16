@@ -18,15 +18,12 @@ branches:
   only:
   - master
 
-before_script:
-- export TZ=Pacific/Auckland
-- export TAG=`if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master"]];
-  then echo "latest"; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi`
-- docker login -u $DOCKER_USER -p $DOCKER_PASS
-
 after_success:
 - gradle jacocoTestReport
 - gradle dockerTag
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- export TAG=`if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master"]];
+  then echo "latest"; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi`
 - if [[ $TRAVIS_PULL_REQUEST == "false" ]] && [[ $TRAVIS_BRANCH == "master" ]]; then
   gradle dockerPush; fi
 - docker tag $REPO:latest $REPO:$TAG
