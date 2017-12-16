@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-genre-table
+      author: bhavik.kumar
+      comment: create genre table
+      changes:
+        - createTable:
+            tableName: genre
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: unique_name
+              - column:
+                  name: created_date_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_date_time
+                  type: timestamp
+                  constraints:
+                    nullable: false                                  
