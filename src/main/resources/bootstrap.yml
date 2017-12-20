@@ -6,11 +6,11 @@ spring:
   main:
     banner-mode: "off"
   profiles:
-    active: development
+    active: local
   cloud:
     consul:
       discovery:   
-        tags: version=1.0, 1.0, 1.0.2
+        tags: version=1.0, 1.0, 1.0.3
         instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
       config:
         enabled: true
@@ -26,6 +26,31 @@ spring:
                  
 management:
   add-application-context-header: false
+---
+spring:
+  profiles: local
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:genre
+    username: sa
+    password:
+  cloud:
+    bus:
+      enabled: false
+    discovery:
+      enabled: false
+    consul:
+      enabled: false
+      config:
+        enabled: false
+    vault:
+      enabled: false  
 ---
 spring:
   profiles: development
