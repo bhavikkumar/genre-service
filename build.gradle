@@ -13,6 +13,7 @@ buildscript {
 }
 
 group = 'bhavikk'
+version =  '1.0.3'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -23,9 +24,23 @@ apply plugin: 'com.palantir.docker'
 apply plugin: 'findbugs'
 apply plugin: 'org.owasp.dependencycheck'
 
-jar {
+task serviceJar(type: Jar) {
     baseName = 'genre-service'
-    version =  '1.0.2'
+    version = project.version
+}
+
+
+task modelJar(type: Jar) {
+    from(sourceSets.main.output) {  
+        include "io/bhavik/genre/model/**" 
+    }  
+    baseName = 'genre-model'
+    version = project.version
+}
+
+artifacts {
+    archives serviceJar
+    archives modelJar
 }
 
 repositories {
@@ -63,11 +78,6 @@ tasks.withType(FindBugs) {
         html.enabled true
     }
 }
-
-// Runs coverage verification and report every test run
-// test { 
-//    finalizedBy jacocoTestReport, jacocoTestCoverageVerification
-// }
 
 docker {
     name "${project.group}/${jar.baseName}:${jar.version}"
