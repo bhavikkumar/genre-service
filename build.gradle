@@ -24,25 +24,6 @@ apply plugin: 'com.palantir.docker'
 apply plugin: 'findbugs'
 apply plugin: 'org.owasp.dependencycheck'
 
-task serviceJar(type: Jar) {
-    baseName = 'genre-service'
-    version = project.version
-}
-
-
-task modelJar(type: Jar) {
-    from(sourceSets.main.output) {  
-        include "io/bhavik/genre/model/**" 
-    }  
-    baseName = 'genre-model'
-    version = project.version
-}
-
-artifacts {
-    archives serviceJar
-    archives modelJar
-}
-
 repositories {
     mavenCentral()
 }
@@ -53,6 +34,14 @@ targetCompatibility = 1.8
 configurations {
     compile.exclude group: 'org.hibernate', module: 'hibernate-entitymanager'
 }
+
+task modelJar(type: Jar) {
+   baseName = 'genre-model'
+   from sourceSets.main.output
+   include 'io/bhavik/genre/model/**'
+}
+
+assemble.dependsOn modelJar
 
 jacocoTestReport {
     reports {
